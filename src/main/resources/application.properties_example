@@ -28,6 +28,7 @@ zgw.endpoint.resultaattype = /catalogi/api/v1/resultaattypen
 zgw.endpoint.zaakinformatieobject = /zaken/api/v1/zaakinformatieobjecten
 zgw.endpoint.enkelvoudiginformatieobject = /documenten/api/v1/enkelvoudiginformatieobjecten
 zgw.endpoint.zaak = /zaken/api/v1/zaken
+zgw.endpoint.zaakobject = /zaken/api/v1/zaakobjecten
 
 #spring.datasource.initialize=true
 #spring.jpa.generate-ddl=true
@@ -55,7 +56,7 @@ spring.h2.console.path=/h2-console
 spring.h2.console.settings.trace=true
 spring.h2.console.settings.web-allow-others=true
 
-version=@version@ 
+version=@version@
 ladybug.maxCheckpoints=2500
 ladybug.maxMemoryUsage=100000000
 ladybug.maxMessageLength=1000000
