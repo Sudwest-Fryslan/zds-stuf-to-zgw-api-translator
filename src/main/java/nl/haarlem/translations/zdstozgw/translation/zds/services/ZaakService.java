@@ -285,7 +285,10 @@ public class ZaakService {
 						// The combination of zaak-uuid with datetime should be unique...
 						// when we still have a datetime						
 						int index = this.zgwClient.getStatussenByZaakUrl(zgwZaak.url).size();
-						String ending = Integer.toString(index) + "00";
+						// we dont want to have seconds 
+						int seconds = index % 60;
+						int minutes = index / 60;
+						String ending = Integer.toString((minutes * 100) + seconds) + "00";
 						zdsStatusDatum = zdsStatusDatum.substring(0, zdsStatusDatum.length() - ending.length()) + ending;
 					}					
 					var zgwStatusDatumTijd = (ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum));					
