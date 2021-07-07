@@ -321,7 +321,11 @@ public class ModelMapperConfig {
 		}		
 	}
 	
-	static public String convertStufDateTimeToZgwDateTime(String stufDateTime) {		
+	static public String convertStufDateTimeToZgwDateTime(String stufDateTime) {
+		return convertStufDateTimeToZgwDateTime(stufDateTime, 0);
+	}
+	
+	static public String convertStufDateTimeToZgwDateTime(String stufDateTime, int offsetSeconds) {		
 		log.debug("convertStufDateTimeToZgwDateTime:" + stufDateTime);
 		if (stufDateTime == null || stufDateTime.length() == 0) {
 			return null;
@@ -345,8 +349,9 @@ public class ModelMapperConfig {
 				// check if it is a date or a datetime (ignore the seconds, this is used for the status)
 				if(cetDate.getHour() == 0 && cetDate.getMinute() == 0 && cetDate.getNano() == 0) { 
 					// a date 
-					log.debug("convertStufDateTimeToZgwDateTime [date] parsed:\t\t\t" + cetDate.toString());					
-					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+					log.debug("convertStufDateTimeToZgwDateTime [date] parsed:\t\t\t" + cetDate.toString());		
+					cetDate = cetDate.plusSeconds(offsetSeconds);
+					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");					
 					var result = cetDate.format(zdsFormatter);
 					log.debug("convertStufDateTimeToZgwDateTime [date] result:\t\t\t" + result);
 					return result;					
@@ -357,6 +362,7 @@ public class ModelMapperConfig {
 					var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 					log.debug("convertStufDateTimeToZgwDateTime [datetime] to GMT tomezone:\t\t" + gmtDate.toString());
 					gmtDate = gmtDate.plusMinutes(Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
+					gmtDate = gmtDate.plusSeconds(offsetSeconds);
 					log.debug("convertStufDateTimeToZgwDateTime [datetime] added offset:\t\t" + gmtDate.toString() + " (offset in minutes:" + ModelMapperConfig.singleton.timeoffset  + ")");
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 					var result = gmtDate.format(zdsFormatter);

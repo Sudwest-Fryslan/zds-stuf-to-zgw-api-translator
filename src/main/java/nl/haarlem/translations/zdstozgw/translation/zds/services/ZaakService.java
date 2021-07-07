@@ -277,21 +277,15 @@ public class ZaakService {
 						debugWarning("statusdatetime contains no time, using now() (DatumGezet, has to be unique)");			
 						zdsStatusDatum = formatter.format(new Date());
 					}
-					else if(zdsStatusDatum.endsWith("00000")) {
-						// TODO: 
-						//		research if de dont want to make the zaaktype/datetime combination always unique 
-						//		and maybe we want to have the client call on a higher lexical level
-						// 
+					
+					var zgwStatusDatumTijd = (ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum));
+					if(zgwStatusDatumTijd.endsWith("T00:00:00.000000Z")) {
 						// The combination of zaak-uuid with datetime should be unique...
-						// when we still have a datetime						
+						// We only do this, when we have a datetime, thus when time without seconds						
 						int index = this.zgwClient.getStatussenByZaakUrl(zgwZaak.url).size();
-						// we dont want to have seconds 
-						int seconds = index % 60;
-						int minutes = index / 60;
-						String ending = Integer.toString((minutes * 100) + seconds) + "00";
-						zdsStatusDatum = zdsStatusDatum.substring(0, zdsStatusDatum.length() - ending.length()) + ending;
+						zgwStatusDatumTijd = (ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum, index));
 					}					
-					var zgwStatusDatumTijd = (ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum));					
+					
 					zgwStatus.setDatumStatusGezet(zgwStatusDatumTijd);
 					this.zgwClient.addZaakStatus(zgwStatus);
 					changed = true;
