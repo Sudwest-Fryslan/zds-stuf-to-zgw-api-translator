@@ -374,10 +374,8 @@ public class ZaakService {
 			zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
 		}
 		if (zdsRol.gerelateerde.nietNatuurlijkPersoon != null) {
-			if (zgwRol.betrokkeneIdentificatie == null) {
-				if (zgwRol.betrokkeneIdentificatie != null) {
-					throw new ConverterException("Rol: " + typeRolOmschrijving + " wordt al gebruikt voor medewerker of natuurlijk persoon");
-				}
+			if (zgwRol.betrokkeneIdentificatie != null) {
+				throw new ConverterException("Rol: " + typeRolOmschrijving + " wordt al gebruikt voor medewerker of natuurlijk persoon");
 			}
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.nietNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
 			// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/118
@@ -385,7 +383,7 @@ public class ZaakService {
 			//zgwRol.betrokkeneIdentificatie.annIdentificatie = zdsRol.gerelateerde.nietNatuurlijkPersoon.annIdentificatie;
 			zgwRol.betrokkeneIdentificatie.statutaireNaam = zdsRol.gerelateerde.nietNatuurlijkPersoon.statutaireNaam;
 
-			var rechtsvorm = zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm.toLowerCase();
+			var rechtsvorm = (zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm!=null) ? zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm.toLowerCase() : null;
 			if(rechtsvorm == null || rechtsvorm.length() == 0 ) {
 				// do nothing
 			} else if(rechtsvorm.contains("vennootschap")) {
