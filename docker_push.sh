@@ -7,6 +7,9 @@ set +x
 rm -f ./src/main/resources/application.properties
 rm -f ./src/main/resources/config.json
 
+mkdir ./data/tests
+cp -R ./src/test/resources/ladybug/* /data/tests
+
 mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 
 # Echo script commands
