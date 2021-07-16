@@ -13,10 +13,10 @@ Afterwards, if the event type is 'push' to master or release-* branches the dock
 
 ## Versioning
 
-master and the release-* branches has a branch protection rule and requires a pull request review to be able to merge.
+master and the release-* branches have a branch protection rule and require a pull request review to be able to merge.
 Pull request merge action will result in a 'push' event.
  - Any push event to master will update the 'latest' tagged version in docker hub.
- - Any push event to release-{version} will create/update {version}-latest version in docker hub.
+ - Any push event to release-{version} branch will create/update {version}-latest tagged image in docker hub.
 
 Creating releases will result in a new version in the repository. (For creating releases in github see https://docs.github.com/en/github/administering-a-repository/releasing-projects-on-github/managing-releases-in-a-repository).
 
@@ -35,6 +35,7 @@ To have a new version in docker hub registry it is required to create a release.
 | release-1.2                               | release 		   | 1.2.5         | 1.2.5  		  | 
 
 Basically to have an independent version creating release is mandatory. Other actions will only overwrite the existing versions.(Containing 'latest' naming convention.)
+
 ## Configuration update
 In OZB, there are two configuration files which may require changes for the deployment. Namely, _application.properties_ and _config.json_. These files are located in _/root/config_ folder and mounted to the docker container.
 Analyze PR to check whether the deployment requires changes in one of these files or not. Then, do the change.
